@@ -21,19 +21,33 @@ public class Ui {
         System.out.print(
         "      Choose the option:       \n"
         + "-------------------------------\n"
-        + "|1 - Set master password       |\n"
+        + "|1 - Generate a new password   |\n"
         + "-------------------------------\n"
-        + "|2 - Generate a new password   |\n"
+        + "|2 - Register password         |\n"
         + "-------------------------------\n"
-        + "|3 - Register password         |\n"
+        + "|3 - Remove registered password|\n"
         + "-------------------------------\n"
         + "|4 - View registered passwords |\n"
         + "-------------------------------\n"
-        + "|5 - View Logs                 |\n"
+        + "|5 - Manager Configurations    |\n"
         + "-------------------------------\n"
         + "|-1 - Exit                     |\n"
         + "-------------------------------\n"
         + "-> "
+        );
+    }
+
+    public static void configMenu(){
+        System.out.print(
+            "      Choose the option:       \n"
+            + "-------------------------------\n"
+            + "|1 - Change master password    |\n"
+            + "-------------------------------\n"
+            + "|2 - Show passwords            |\n"
+            + "-------------------------------\n"
+            + "|-1 - Back                     |\n"
+            + "-------------------------------\n"
+            + "-> "
         );
     }
 

@@ -33,34 +33,6 @@ public class Program {
                         sc.close();
                         break;
                     case 1:
-                        sc.nextLine();
-                        System.out.println();
-                        System.out.print("Enter the old master password(Press enter if you don't have): ");
-                        String oldPass = sc.nextLine();
-
-                        try {
-                            Password.checkMaster(oldPass);
-
-                            System.out.println();
-                            System.out.print("Enter the new master password: ");
-                            String newPass = sc.nextLine();
-
-                            Password.setMaster(newPass);
-
-                            System.out.println();
-                            System.out.println(ANSI_YELLOW + "Master password saved !" + ANSI_RESET);
-                            System.out.println();
-                            System.out.println("Press enter to continue");
-                            sc.nextLine();
-
-                        } catch (PasswordException e) {
-                            System.out.println(e.getMessage());
-                            System.out.println();
-                            System.out.println("Press enter to continue.");
-                            sc.nextLine();
-                        }
-                        break;
-                    case 2:
                         System.out.print("Enter the length of your password: ");
                         System.out.println(
                                 ANSI_YELLOW + "\nGenerated password: " + Password.generate(sc.nextInt()) + ANSI_RESET);
@@ -70,12 +42,12 @@ public class Program {
                         sc.nextLine();
                         sc.nextLine();
                         break;
-                    case 3:
+                    case 2:
                         sc.nextLine();
                         System.out.print("Enter Your master password: ");
                         String master = sc.nextLine();
 
-                        try{
+                        try {
                             Password.checkMaster(master);
                             System.out.println();
 
@@ -87,15 +59,62 @@ public class Program {
                             String alias = sc.nextLine();
 
                             Password.register(master, alias, password);
-                        }catch(PasswordException e){
+                            System.out.println();
+                            System.out.println(ANSI_YELLOW + "Password registered." + ANSI_RESET);
+                            System.out.println();
+                            System.out.println("Press enter to continue");
+                            sc.nextLine();
+                        } catch (PasswordException e) {
                             System.out.println(e.getMessage());
                             System.out.println();
                             System.out.println("Press enter to continue");
                             sc.nextLine();
                         }
                         break;
+                    case 3:
+                        break;
                     case 4:
+                        break;
+                    case 5:
+                        Ui.configMenu();
+                        int opc = sc.nextInt();
 
+                        switch (opc) {
+                            case -1:
+                                break;
+                            case 1:
+                                sc.nextLine();
+                                System.out.println();
+                                System.out.print("Enter the old master password(Press enter if you don't have): ");
+                                String oldPass = sc.nextLine();
+
+                                try {
+                                    Password.checkMaster(oldPass);
+
+                                    System.out.println();
+                                    System.out.print("Enter the new master password: ");
+                                    String newPass = sc.nextLine();
+
+                                    Password.setMaster(newPass);
+
+                                    System.out.println();
+                                    System.out.println(ANSI_YELLOW + "Master password saved !" + ANSI_RESET);
+                                    System.out.println();
+                                    System.out.println("Press enter to continue");
+                                    sc.nextLine();
+
+                                } catch (PasswordException e) {
+                                    System.out.println(e.getMessage());
+                                    System.out.println();
+                                    System.out.println("Press enter to continue.");
+                                    sc.nextLine();
+                                }
+                                break;
+                            case 2:
+                                break;
+                            default:
+                                System.out.println("This option does not exists");
+                        }
                         break;
                     default:
                         System.out.println("This option does not exists");

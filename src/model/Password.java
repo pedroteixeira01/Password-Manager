@@ -221,7 +221,7 @@ public class Password{
         }
     }
 
-    public static void register(String master, String alias, String password){ //testar
+    public static void register(String master, String alias, String password){
         if(masterExists()){
             checkMaster(master.trim());
             JSONParser parser = new JSONParser();
