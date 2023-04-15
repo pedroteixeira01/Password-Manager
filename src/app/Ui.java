@@ -17,7 +17,7 @@ public class Ui {
         );
     }
 
-    public static void menu(){
+    public static void mainMenu(){
         System.out.print(
         "      Choose the option:       \n"
         + "-------------------------------\n"

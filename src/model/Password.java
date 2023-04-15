@@ -170,7 +170,6 @@ public class Password{
     }
 
     public static void checkMaster(String oldPass){
-
         JSONParser parser = new JSONParser();
 
         try(FileReader fr = new FileReader(getRepoPath())){
@@ -180,6 +179,7 @@ public class Password{
 
                 String pass = (String) obj.get("master");
                 if(!(pass.equals(oldPass))){
+                    System.out.println();
                     throw new PasswordException(ANSI_RED + "The master password is incorrect." + ANSI_RESET);
                 }
             }
@@ -220,4 +220,32 @@ public class Password{
             write(getRepoPath(), false, obj.toJSONString());
         }
     }
+
+    public static void register(String master, String alias, String password){ //testar
+        if(masterExists()){
+            checkMaster(master.trim());
+            JSONParser parser = new JSONParser();
+            
+            try{
+                JSONObject obj = (JSONObject) parser.parse(new FileReader(getRepoPath()));
+                obj.put(alias.trim(), password.trim());
+                
+                write(getRepoPath(), false, obj.toJSONString());
+
+            }catch(FileNotFoundException e){
+                System.out.println(ANSI_RED + "The file does not exist." + ANSI_RESET);
+            }catch(ParseException e){
+                e.getMessage();
+            }catch(IOException e){
+                System.out.println(ANSI_RED + "Unexpected error in file." + ANSI_RESET);
+            }
+            
+        }else{
+            setMaster(password);
+            System.out.println("Master password created using the " + alias + " password."
+                                + "Please, change later for more security.");
+            register(master, alias, password);
+        }
+    }
+    public static void getPasswords(String master){}
 }
