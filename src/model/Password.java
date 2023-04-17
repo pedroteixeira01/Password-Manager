@@ -15,7 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.lang.StringBuilder;
@@ -169,7 +168,7 @@ public class Password{
         return pass;
     }
 
-    public static void checkMaster(String oldPass){
+    public static void checkMaster(String master){
         JSONParser parser = new JSONParser();
 
         try(FileReader fr = new FileReader(getRepoPath())){
@@ -178,7 +177,7 @@ public class Password{
             if(obj.containsKey("master")){
 
                 String pass = (String) obj.get("master");
-                if(!(pass.equals(oldPass))){
+                if(!(pass.equals(master.trim()))){
                     System.out.println();
                     throw new PasswordException(ANSI_RED + "The master password is incorrect." + ANSI_RESET);
                 }
@@ -221,9 +220,8 @@ public class Password{
         }
     }
 
-    public static void register(String master, String alias, String password){
+    public static void register(String alias, String password){
         if(masterExists()){
-            checkMaster(master.trim());
             JSONParser parser = new JSONParser();
             
             try{
@@ -244,8 +242,47 @@ public class Password{
             setMaster(password);
             System.out.println("Master password created using the " + alias + " password."
                                 + "Please, change later for more security.");
-            register(master, alias, password);
+            register(alias, password);
         }
     }
-    public static void getPasswords(String master){}
+
+    public static void remove(String alias){
+        if(masterExists()){
+            JSONParser parser = new JSONParser();
+        
+            try{
+                JSONObject obj = (JSONObject) parser.parse(new FileReader(getRepoPath()));
+                obj.remove(alias);
+
+                write(getRepoPath(), false, obj.toJSONString());
+
+            }catch(FileNotFoundException e){
+                System.out.println(ANSI_RED + "The file does not exist." + ANSI_RESET);
+            }catch(ParseException e){
+                e.getMessage();
+            }catch(IOException e){
+                System.out.println(ANSI_RED + "Unexpected error in file." + ANSI_RESET);
+            }
+        }
+    }
+
+    public static JSONObject getPasswords(){
+        JSONParser parser = new JSONParser();
+
+        try{
+            JSONObject obj = (JSONObject) parser.parse(new FileReader(getRepoPath()));
+            obj.remove("master");
+
+            return obj;
+        }catch(FileNotFoundException e){
+            System.out.println(ANSI_RED + "The file does not exist." + ANSI_RESET);
+            return null;
+        }catch(ParseException e){
+            e.getMessage();
+            return null;
+        }catch(IOException e){
+            System.out.println(ANSI_RED + "Unexpected error in file." + ANSI_RESET);
+            return null;
+        }
+    }
 }

@@ -34,13 +34,47 @@ public class Program {
                         break;
                     case 1:
                         System.out.print("Enter the length of your password: ");
-                        System.out.println(
-                                ANSI_YELLOW + "\nGenerated password: " + Password.generate(sc.nextInt()) + ANSI_RESET);
 
-                        System.out.println();
-                        System.out.println("Press enter to continue");
-                        sc.nextLine();
-                        sc.nextLine();
+                        try {
+                            String pass = Password.generate(sc.nextInt()).toString();
+                            System.out.print(ANSI_YELLOW + "\nGenerated password: " + pass + ANSI_RESET);
+                            System.out.println();
+
+                            System.out.print("Do you want to save (Y/N)? ");
+                            char save = sc.next().charAt(0);
+                            System.out.println();
+                            sc.nextLine();
+
+                            if ((save == 'y') || (save == 'Y')) {
+                                System.out.print("Enter your master password: ");
+                                String master = sc.nextLine();
+                                System.out.println();
+
+                                try {
+                                    Password.checkMaster(master.trim());
+
+                                    System.out.print("Enter the nickname for your password: ");
+                                    String alias = sc.nextLine();
+                                    System.out.println();
+
+                                    Password.register(alias, pass);
+
+                                    System.out.println("Press enter to continue");
+                                    sc.nextLine();
+                                } catch (PasswordException e) {
+                                    System.out.println(e.getMessage());
+                                    System.out.println();
+                                    System.out.println("Press enter to continue");
+                                    sc.nextLine();
+                                }
+                            }
+                        } catch (PasswordException e) {
+                            System.out.println(e.getMessage());
+                            System.out.println();
+                            System.out.println("Press enter to continue");
+                            sc.nextLine();
+                            sc.nextLine();
+                        }
                         break;
                     case 2:
                         sc.nextLine();
@@ -48,17 +82,17 @@ public class Program {
                         String master = sc.nextLine();
 
                         try {
-                            Password.checkMaster(master);
-                            System.out.println();
-
-                            System.out.print("Enter the password: ");
-                            String password = sc.nextLine();
+                            Password.checkMaster(master.trim());
                             System.out.println();
 
                             System.out.print("Enter the nickname for your password: ");
                             String alias = sc.nextLine();
 
-                            Password.register(master, alias, password);
+                            System.out.print("Enter the password: ");
+                            String password = sc.nextLine();
+                            System.out.println();
+
+                            Password.register(alias, password);
                             System.out.println();
                             System.out.println(ANSI_YELLOW + "Password registered." + ANSI_RESET);
                             System.out.println();
@@ -72,50 +106,96 @@ public class Program {
                         }
                         break;
                     case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        Ui.configMenu();
-                        int opc = sc.nextInt();
+                        sc.nextLine();
+                        System.out.print("Enter Your master password: ");
+                        master = sc.nextLine();
+                        System.out.println();
 
-                        switch (opc) {
-                            case -1:
-                                break;
-                            case 1:
-                                sc.nextLine();
-                                System.out.println();
-                                System.out.print("Enter the old master password(Press enter if you don't have): ");
-                                String oldPass = sc.nextLine();
+                        try {
+                            Password.checkMaster(master);
+                            System.out.print("Enter the password's nickname: ");
+                            String alias = sc.nextLine();
+                            System.out.println();
 
-                                try {
-                                    Password.checkMaster(oldPass);
+                            Password.remove(alias);
 
-                                    System.out.println();
-                                    System.out.print("Enter the new master password: ");
-                                    String newPass = sc.nextLine();
-
-                                    Password.setMaster(newPass);
-
-                                    System.out.println();
-                                    System.out.println(ANSI_YELLOW + "Master password saved !" + ANSI_RESET);
-                                    System.out.println();
-                                    System.out.println("Press enter to continue");
-                                    sc.nextLine();
-
-                                } catch (PasswordException e) {
-                                    System.out.println(e.getMessage());
-                                    System.out.println();
-                                    System.out.println("Press enter to continue.");
-                                    sc.nextLine();
-                                }
-                                break;
-                            case 2:
-                                break;
-                            default:
-                                System.out.println("This option does not exists");
+                            System.out.println(ANSI_YELLOW + "Password deleted." + ANSI_RESET);
+                            System.out.println();
+                            System.out.println("Press enter to continue");
+                            sc.nextLine();
+                        } catch (PasswordException e) {
+                            System.out.println(e.getMessage());
+                            System.out.println();
+                            System.out.println("Press enter to continue");
+                            sc.nextLine();
                         }
                         break;
+                    case 4:
+                        sc.nextLine();
+                        System.out.print("Enter Your master password: ");
+                        master = sc.nextLine();
+                        System.out.println();
+
+                        try {
+                            Password.checkMaster(master);
+
+                            Ui.showPasswords();
+                            System.out.println();
+                            System.out.println("Press enter to continue");
+                            sc.nextLine();
+                        } catch (PasswordException e) {
+                            System.out.println(e.getMessage());
+                            System.out.println();
+                            System.out.println("Press enter to continue");
+                            sc.nextLine();
+                        }
+                        break;
+                    case 5:
+                        int opc = 0;
+
+                        while (opc != -1) {
+                            Ui.clearConsole();
+                            Ui.configMenu();
+                            opc = sc.nextInt();
+
+                            switch (opc) {
+                                case -1:
+                                    break;
+                                case 1:
+                                    sc.nextLine();
+                                    System.out.println();
+                                    System.out.print("Enter the old master password(Press enter if you don't have): ");
+                                    String oldPass = sc.nextLine();
+
+                                    try {
+                                        Password.checkMaster(oldPass.trim());
+
+                                        System.out.println();
+                                        System.out.print("Enter the new master password: ");
+                                        String newPass = sc.nextLine();
+
+                                        Password.setMaster(newPass);
+
+                                        System.out.println();
+                                        System.out.println(ANSI_YELLOW + "Master password saved !" + ANSI_RESET);
+                                        System.out.println();
+                                        System.out.println("Press enter to continue");
+                                        sc.nextLine();
+
+                                    } catch (PasswordException e) {
+                                        System.out.println(e.getMessage());
+                                        System.out.println();
+                                        System.out.println("Press enter to continue.");
+                                        sc.nextLine();
+                                    }
+                                    break;
+                                case 2:
+                                    break;
+                                default:
+                                    System.out.println("This option does not exists");
+                            }
+                            break;
+                        }
                     default:
                         System.out.println("This option does not exists");
                         break;
