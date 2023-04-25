@@ -40,6 +40,7 @@ public class Program {
                             System.out.print(ANSI_YELLOW + "\nGenerated password: " + pass + ANSI_RESET);
                             System.out.println();
 
+                            System.out.println();
                             System.out.print("Do you want to save (Y/N)? ");
                             char save = sc.next().charAt(0);
                             System.out.println();
@@ -58,6 +59,7 @@ public class Program {
                                     System.out.println();
 
                                     Password.register(alias, pass);
+                                    Password.setLog("Register", "repository");
 
                                     System.out.println("Press enter to continue");
                                     sc.nextLine();
@@ -68,6 +70,7 @@ public class Program {
                                     sc.nextLine();
                                 }
                             }
+
                         } catch (PasswordException e) {
                             System.out.println(e.getMessage());
                             System.out.println();
@@ -93,9 +96,12 @@ public class Program {
                             System.out.println();
 
                             Password.register(alias, password);
+                            Password.setLog("Register", "repository");
+
                             System.out.println();
                             System.out.println(ANSI_YELLOW + "Password registered." + ANSI_RESET);
                             System.out.println();
+
                             System.out.println("Press enter to continue");
                             sc.nextLine();
                         } catch (PasswordException e) {
@@ -118,9 +124,11 @@ public class Program {
                             System.out.println();
 
                             Password.remove(alias);
+                            Password.setLog("Remove", "repository");
 
                             System.out.println(ANSI_YELLOW + "Password deleted." + ANSI_RESET);
                             System.out.println();
+
                             System.out.println("Press enter to continue");
                             sc.nextLine();
                         } catch (PasswordException e) {
@@ -140,6 +148,8 @@ public class Program {
                             Password.checkMaster(master);
 
                             Ui.showPasswords();
+                            Password.setLog("List", "repository");
+
                             System.out.println();
                             System.out.println("Press enter to continue");
                             sc.nextLine();
@@ -175,6 +185,7 @@ public class Program {
                                         String newPass = sc.nextLine();
 
                                         Password.setMaster(newPass);
+                                        Password.setLog("Change master", "repository");
 
                                         System.out.println();
                                         System.out.println(ANSI_YELLOW + "Master password saved !" + ANSI_RESET);
@@ -190,6 +201,21 @@ public class Program {
                                     }
                                     break;
                                 case 2:
+                                    sc.nextLine();
+                                    System.out.print("Enter Your master password: ");
+                                    master = sc.nextLine();
+
+                                    try {
+                                        Password.checkMaster(master);
+                                        Password.getLog();
+                                        Password.setLog("List", "Logs");
+                                    } catch (PasswordException e) {
+                                        System.out.println(e.getMessage());
+                                        System.out.println();
+                                        System.out.println("Press enter to continue.");
+                                        sc.nextLine();
+                                    }
+
                                     break;
                                 default:
                                     System.out.println("This option does not exists");
